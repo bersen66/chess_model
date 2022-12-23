@@ -1,5 +1,5 @@
-# project-template
-Template for cmake c++ projects.
+# Chess (tested only on Ubuntu) 
+Model of chess
 
 ## Installation:
 Requires [Conan](https://conan.io/center/) and CMake. 
@@ -14,7 +14,7 @@ pip install cmake
 mkdir cmake-build-debug
 cd cmake-build-debug
 conan install .. --build=missing
-cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_TESTING=ON -DENABLE_BENCHMARKS=ON ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_TESTING=ON ..
 cmake --build .  
 ```
 
