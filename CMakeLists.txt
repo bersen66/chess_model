@@ -11,17 +11,25 @@ include_directories(include)
 
 #Add app-sources there
 add_library(
-    APPLICATION
-    src/adder/adder.cpp
+        APPLICATION
+        src/chess/figure.cpp
+        src/chess/sector.cpp
+        src/chess/field.cpp
+        src/chess/chess.cpp
 )
 
-
 add_executable(${PROJECT_NAME} src/main.cpp)
+
+find_package(Boost COMPONENTS stacktrace_backtrace REQUIRED)
+if (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} Boost::stacktrace_backtrace)
+endif ()
 
 
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 option(ENABLE_TESTING "Enable testing" ON)
-option(ENABLE_BENCHMARKS "Enable benchmarks" ON)
+
 
 
 if (NOT ENABLE_TESTING)
@@ -32,21 +40,12 @@ else ()
     add_subdirectory(tests)
 endif ()
 
-
-if (NOT ENABLE_BENCHMARKS)
-    message(STATUS "Benchmarks disabled")
-elseif (IS_SUBPROJECT)
-    message(STATUS "Do not build benchmarks for subproject")
-else ()
-    add_subdirectory(benchmarks)
-endif ()
-
 find_package(fmt REQUIRED)
 if (fmt_FOUND)
     message("${PROJECT_NAME}: FOUND FMT")
     include_directories(${fmt_INCLUDE_DIRS})
     target_link_libraries(APPLICATION ${fmt_LIBRARIES})
     target_link_libraries(${PROJECT_NAME} ${fmt_LIBRARIES})
-endif()
+endif ()
 
 target_link_libraries(${PROJECT_NAME} APPLICATION)

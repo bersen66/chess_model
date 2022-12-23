@@ -1,16 +1,18 @@
-#include <fmt/color.h>
-#include <fmt/core.h>
+#include "chess/chess.hpp"
 
-#include "adder/adder.hpp"
+#include "boost/stacktrace.hpp"
+#include <fmt/ostream.h>
+#include "csignal"
+
+void HandleSIGSEGV(int signal)
+{
+    // Show stacktrace if SIGSEGV
+    fmt::print("\nSIGSEGV OCCURED!\nSIGNAL: {}\nBACKTRACE: {}", signal, boost::stacktrace::stacktrace());
+    std::exit(EXIT_FAILURE);
+}
 
 int main(int argc, char **argv) {
-  if (argc != 3) {
-    fmt::print(fmt::fg(fmt::color::red), "Invalid usage!\n");
-    fmt::print(fmt::fg(fmt::color::green), "Usage: ");
-    fmt::print("<op1> <op2>\n");
-    return EXIT_FAILURE;
-  }
-  fmt::print(fmt::fg(fmt::color::green), "Result: {}\n",
-             adder::Add(std::atoi(argv[1]), std::atoi(argv[2])));
-  return EXIT_SUCCESS;
+    std::signal(SIGSEGV, HandleSIGSEGV);
+    chess::RunGame();
+    return 0;
 }
