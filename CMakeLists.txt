@@ -5,6 +5,7 @@ project(TEMPLATE VERSION 0.1 LANGUAGES CXX) # change project name here
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+
 set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 
 include_directories(include)
@@ -20,11 +21,21 @@ add_library(
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 
-find_package(Boost COMPONENTS stacktrace_backtrace REQUIRED)
-if (Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} Boost::stacktrace_backtrace)
-endif ()
+if (WIN32)
+    find_package(Boost COMPONENTS stacktrace_windbg REQUIRED)
+    if (Boost_FOUND)
+        include_directories(${Boost_INCLUDE_DIRS})
+        target_link_libraries(${PROJECT_NAME} Boost::stacktrace_windbg)
+    endif ()
+else()
+    find_package(Boost COMPONENTS stacktrace_backtrace REQUIRED)
+    if (Boost_FOUND)
+        include_directories(${Boost_INCLUDE_DIRS})
+        target_link_libraries(${PROJECT_NAME} Boost::stacktrace_backtrace)
+    endif ()
+endif()
+
+
 
 
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)

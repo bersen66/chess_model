@@ -35,7 +35,7 @@ sector::figure::FigureType DefineFigureType(size_t i, size_t j) {
     }
 }
 
-sector::figure::FigureColor DefineFigureColor(size_t i, size_t j) {
+sector::figure::FigureColor DefineFigureColor(size_t i) {
     if (1 <= i && i <= 2) {
         return sector::figure::FigureColor::BLACK;
     }
@@ -51,14 +51,13 @@ std::vector<std::vector<sector::Sector>> Field::Build() {
     std::vector<std::vector<sector::Sector>> result(
         n, std::vector<sector::Sector>(n));
 
-    size_t cnt = 0;
 
     for (size_t i = 1; i <= n; i++) {
         for (size_t j = 1; j <= n; j++) {
             result[i - 1][j - 1] = sector::Sector{
                 .figure = std::make_shared<sector::figure::Figure>(
-                    sector::figure::Figure{.type = DefineFigureType(i, j),
-                                           .color = DefineFigureColor(i, j)}),
+                    sector::figure::Figure{.type  = DefineFigureType(i, j),
+                                           .color = DefineFigureColor(i)}),
 
                 .background = DefineBackgroundColor(i, j)};
         }

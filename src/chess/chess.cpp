@@ -33,7 +33,7 @@ bool Game::ValidPosition(size_t x, size_t y) const {
     return 1 <= x && x <= 8 && 1 <= y && y <= 8;
 }
 bool Game::CanSelect(size_t x, size_t y) const {
-    return ValidPosition(x, y) && field.HasCharacter(x, y);
+    return ValidPosition(x, y) && field.HasCharacter(x, y) && field.HasCharacter(x, y) ;
 }
 
 }  // namespace game
